@@ -1,6 +1,9 @@
 use std::{error::Error, num::ParseIntError, str::FromStr};
 
-use crate::{Apply, Options};
+use rand::{Rng, SeedableRng};
+use rand_pcg::Pcg64;
+
+use crate::{options::HasOptions, time_space, Apply, Options, State, StateIter};
 
 #[derive(clap::Args, Debug)]
 pub struct Args {
@@ -11,8 +14,33 @@ pub struct Args {
     opts: Options,
 }
 
+impl HasOptions for Args {
+    fn options(&self) -> &Options {
+        &self.opts
+    }
+}
+
 pub fn run(args: &Args) -> Result<(), Box<dyn Error>> {
-    println!("ca4 {:?}", args);
+    let mut rng = Pcg64::seed_from_u64(args.seed().value());
+
+    let (them, colors) = args.theme().pick(&mut rng)?;
+
+    let rule = args.rule.unwrap_or_else(|| Rule::new(rng.gen()));
+
+    println!("seed: {}, theme: {}, rule: {}", args.seed(), them, rule);
+
+    let mut state = State::with_size(args.cols() as usize);
+    state.set(state.len() as i32 / 2, 3);
+
+    let iter = StateIter::new(rule, state);
+    time_space::render_to(
+        args.dest(),
+        args.cols(),
+        args.rows(),
+        args.cell_size(),
+        &colors,
+        iter,
+    )?;
     Ok(())
 }
 
