@@ -96,7 +96,6 @@ impl FromStr for ThemeRef {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match REF_PATTERN.captures(s) {
             Some(caps) => {
-                println!("{:?}", caps);
                 let path = caps.get(1).unwrap().as_str();
                 let idx = caps.get(2).unwrap().as_str().parse::<usize>()?;
 

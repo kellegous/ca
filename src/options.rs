@@ -8,7 +8,7 @@ use crate::{ca1, ca4, Color, Seed, ThemeRef};
 
 #[derive(Parser, Debug)]
 pub struct Options {
-    #[clap(long, default_value_t = 400)]
+    #[clap(long, default_value_t = 200)]
     rows: i32,
 
     #[clap(long, default_value_t = 100)]
