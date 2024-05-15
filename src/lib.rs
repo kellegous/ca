@@ -9,7 +9,7 @@ mod themes;
 pub mod time_space;
 
 pub use color::Color;
-pub use options::{Command, Options};
+pub use options::{Command, HasOptions, Options};
 pub use seed::Seed;
 pub use state::{Apply, State};
 pub use state_iter::StateIter;

@@ -1,7 +1,10 @@
-use clap::{Parser, Subcommand};
 use std::error::Error;
 
-use crate::{ca1, ca4, Seed, ThemeRef};
+use clap::{Parser, Subcommand};
+use rand::{RngCore, SeedableRng};
+use rand_pcg::Pcg64;
+
+use crate::{ca1, ca4, Color, Seed, ThemeRef};
 
 #[derive(Parser, Debug)]
 pub struct Options {
@@ -92,5 +95,14 @@ pub trait HasOptions {
 
     fn cell_size(&self) -> i32 {
         self.options().cell_size()
+    }
+
+    fn generate<F, T>(&self, f: F) -> Result<(usize, Vec<Color>, T), Box<dyn Error>>
+    where
+        F: Fn(&mut dyn RngCore) -> T,
+    {
+        let mut rng = Pcg64::seed_from_u64(self.seed().value());
+        let (theme, colors) = self.theme().pick(&mut rng)?;
+        Ok((theme, colors, f(&mut rng)))
     }
 }
