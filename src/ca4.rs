@@ -48,7 +48,7 @@ impl FromStr for Rule {
 
 impl std::fmt::Display for Rule {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{:x}", self.v)
+        write!(f, "{}", self.v)
     }
 }
 

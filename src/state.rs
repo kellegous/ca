@@ -46,3 +46,12 @@ impl State {
         next
     }
 }
+
+impl std::fmt::Display for State {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        for v in self.iter() {
+            write!(f, "{}", v)?;
+        }
+        Ok(())
+    }
+}

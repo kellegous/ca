@@ -24,7 +24,6 @@ impl HasOptions for Args {
 }
 
 pub fn run(args: &Args) -> Result<(), Box<dyn Error>> {
-    println!("{:?}", args);
     let mut rng = Pcg64::seed_from_u64(args.seed().value());
 
     let (theme, colors) = args.theme().pick(&mut rng)?;
@@ -77,7 +76,7 @@ impl FromStr for Rule {
 
 impl std::fmt::Display for Rule {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{:x}", self.v)
+        write!(f, "{}", self.v)
     }
 }
 
